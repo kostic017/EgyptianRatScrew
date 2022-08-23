@@ -10,5 +10,13 @@ public static class Extensions
            .GetField(val.ToString())
            .GetCustomAttributes(typeof(DescriptionAttribute), false);
         return attributes.Length > 0 ? attributes[0].Description : string.Empty;
-    }   
+    }
+
+    public static T Increment<T>(this T src, int index) where T : Enum
+    {
+        T[] arr = (T[])Enum.GetValues(src.GetType());
+        int i = (Array.IndexOf(arr, src) + index) % arr.Length;
+        if (i < 0) return arr[arr.Length + i];
+        return arr[i];
+    }
 }

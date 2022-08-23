@@ -42,11 +42,17 @@ public class Game : MonoBehaviour
         {
             if (Input.mousePosition.y < Screen.height * 0.5f)
             {
-                TakeCards(Player.Player1);
+                if (IsSlapValid())
+                    TakeCards(Player.Player1);
+                else
+                    TakeCards(Player.Player2);
             }
             else
             {
-                TakeCards(Player.Player2);
+                if (IsSlapValid())
+                    TakeCards(Player.Player2);
+                else
+                    TakeCards(Player.Player1);
             }
         }
     }
@@ -78,12 +84,74 @@ public class Game : MonoBehaviour
         {
             var card = deck.GetChild(i).GetComponent<Card>();
             card.transform.parent = cardStack;
-            gameDataManager.AddCard(player, card.Value);
+            gameDataManager.GiveCardToPlayer(player, card.Value);
             cardAnimator.AddAnimation(card, cardStack.position).AddListener(() => Destroy(card.gameObject));
         }
 
         currentPlayer = player;
         UpdateButtons();
+    }
+
+    private bool IsSlapValid()
+    {
+        if (deck.childCount >= 2)
+        {
+            Rank r1 = GetTopCardRankFromDeck(0);
+            Rank r2 = GetTopCardRankFromDeck(1);
+
+            // Double
+            if (r1 == r2)
+                return true;
+
+            // Marriage
+            if ((r1 == Rank.King && r2 == Rank.Queen) || (r1 == Rank.Queen && r2 == Rank.King))
+                return true;
+        }
+
+        if (deck.childCount >= 3)
+        {
+            Rank r1 = GetTopCardRankFromDeck(0);
+            Rank r3 = GetTopCardRankFromDeck(2);
+            Rank rb = GetBottomCardRankFromDeck();
+
+            // Sandwich
+            if (r1 == r3)
+                return true;
+
+            // Top-bottom
+            if (r1 == rb)
+                return true;
+
+            // Divorce
+            if ((r1 == Rank.King && r3 == Rank.Queen) || (r1 == Rank.Queen && r3 == Rank.King))
+                return true;
+        }
+
+        if (deck.childCount >= 4)
+        {
+            Rank r1 = GetTopCardRankFromDeck(0);
+            Rank r2 = GetTopCardRankFromDeck(1);
+            Rank r3 = GetTopCardRankFromDeck(2);
+            Rank r4 = GetTopCardRankFromDeck(3);
+
+            // Four in a row
+            if (r1 == r2.Increment(1) && r1 == r3.Increment(2) && r1 == r4.Increment(3))
+                return true;
+            if (r1 == r2.Increment(-1) && r1 == r3.Increment(-2) && r1 == r4.Increment(-3))
+                return true;
+        }
+
+        return false;
+    }
+
+    private Rank GetTopCardRankFromDeck(int index)
+    {
+        return deck.GetChild(deck.childCount - index - 1).GetComponent<Card>().Value.Rank;
+    }
+
+    private Rank GetBottomCardRankFromDeck()
+    {
+        return deck.GetChild(0).GetComponent<Card>().Value.Rank;
     }
 
     private void TogglePlayer()

@@ -38,7 +38,7 @@ public class GameDataManager
         return player2Cards.Dequeue();
     }
 
-    public void AddCard(Player player, CardValue card)
+    public void GiveCardToPlayer(Player player, CardValue card)
     {
         if (player == Player.Player1)
             player1Cards.Enqueue(card);

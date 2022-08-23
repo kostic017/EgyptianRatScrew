@@ -8,10 +8,9 @@ public static class Constants
 
 public enum Player
 {
-    None,
     Player1,
     Player2,
-}
+};
 
 public enum Suit
 {

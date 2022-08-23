@@ -2,36 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class CardAnimation
-{
-    private readonly Card card;
-    private Vector3 position;
-    private Quaternion rotation;
-
-    public CardAnimation(Card c, Vector3 pos, Quaternion rot)
-    {
-        card = c;
-        position = pos;
-        rotation = rot;
-    }
-
-    public bool Play(float movementSpeed, float rotationSpeed)
-    {
-        if (Vector3.Distance(card.transform.position, position) < 0.01f)
-        {
-            card.transform.SetPositionAndRotation(position, rotation);
-            return true;
-        }
-
-        card.transform.SetPositionAndRotation(
-            Vector3.MoveTowards(card.transform.position, position, movementSpeed * Time.deltaTime),
-            Quaternion.Lerp(card.transform.rotation, rotation, rotationSpeed * Time.deltaTime)
-        );
-
-        return false;
-    }
-}
-
 public class CardAnimator : MonoBehaviour
 {
     [SerializeField]
@@ -80,14 +50,16 @@ public class CardAnimator : MonoBehaviour
         }
     }
 
-    public void AddCardAnimation(Card card, Vector3 position)
+    public UnityEvent AddAnimation(Card card, Vector3 position)
     {
-        AddCardAnimation(card, position, Quaternion.identity);
+        return AddAnimation(card, position, Quaternion.identity);
     }
 
-    public void AddCardAnimation(Card card, Vector3 position, Quaternion rotation)
+    public UnityEvent AddAnimation(Card card, Vector3 position, Quaternion rotation)
     {
-        cardAnimations.Enqueue(new CardAnimation(card, position, rotation));
         working = true;
+        var cardAnimation = new CardAnimation(card, position, rotation);
+        cardAnimations.Enqueue(cardAnimation);
+        return cardAnimation.OnFinished;
     }
 }

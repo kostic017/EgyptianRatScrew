@@ -7,14 +7,19 @@ public class Card : MonoBehaviour
     private SpriteAtlas atlas;
 
     private bool faceUp;
-    
-    public Player Player { get; set; }
 
     private SpriteRenderer spriteRenderer;
+
+    public CardValue Value { get; set; }
 
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    public void SetDisplayingOrder(int order)
+    {
+        spriteRenderer.sortingOrder = order;
     }
 
     public bool FaceUp

@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -37,14 +38,15 @@ public class Game : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
-            Card card = MouseOverCard();
-            if (card != null)
+            if (Input.mousePosition.y < Screen.height * 0.5f)
             {
-                // TODO: handle Player2 slap
-                // TODO: check if slap was valid
                 TakeCards(Player.Player1);
+            }
+            else
+            {
+                TakeCards(Player.Player2);
             }
         }
     }
@@ -64,7 +66,7 @@ public class Game : MonoBehaviour
 
         cardAnimator.AddAnimation(card, deck.position, Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
 
-        TooglePlayer();
+        TogglePlayer();
         UpdateButtons();
     }
 
@@ -80,22 +82,19 @@ public class Game : MonoBehaviour
             cardAnimator.AddAnimation(card, cardStack.position).AddListener(() => Destroy(card.gameObject));
         }
 
+        currentPlayer = player;
         UpdateButtons();
     }
 
-    private Card MouseOverCard()
+    private void TogglePlayer()
     {
-        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-        if (hit.collider != null && hit.transform.TryGetComponent<Card>(out var card))
-            return card;
-        return null;
-    }
-
-    private void TooglePlayer()
-    {
-        if (currentPlayer == Player.Player1)
+        if (gameDataManager.GetCardCount(Player.Player1) == 0)
             currentPlayer = Player.Player2;
-        else
+        else if (gameDataManager.GetCardCount(Player.Player2) == 0)
+            currentPlayer = Player.Player1;
+        else if (currentPlayer == Player.Player1)
+            currentPlayer = Player.Player2;
+        else if (currentPlayer == Player.Player2)
             currentPlayer = Player.Player1;
     }
 

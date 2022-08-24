@@ -40,19 +40,22 @@ public class Game : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
-            if (Input.mousePosition.y < Screen.height * 0.5f)
+            if (!gameDataManager.IsDiscardPileEmpty())
             {
-                if (gameDataManager.IsSlapValid())
-                    TakeCards(Player.Player1);
+                if (Input.mousePosition.y < Screen.height * 0.5f)
+                {
+                    if (gameDataManager.IsSlapValid())
+                        TakeCards(Player.Player1);
+                    else
+                        TakeCards(Player.Player2);
+                }
                 else
-                    TakeCards(Player.Player2);
-            }
-            else
-            {
-                if (gameDataManager.IsSlapValid())
-                    TakeCards(Player.Player2);
-                else
-                    TakeCards(Player.Player1);
+                {
+                    if (gameDataManager.IsSlapValid())
+                        TakeCards(Player.Player2);
+                    else
+                        TakeCards(Player.Player1);
+                }
             }
         }
     }

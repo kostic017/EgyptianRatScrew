@@ -66,6 +66,11 @@ public class GameDataManager
         return card;
     }
 
+    public bool IsDiscardPileEmpty()
+    {
+        return discardPile.Count == 0;
+    }
+
     public bool IsSlapValid()
     {
         if (discardPile.Count >= 2)

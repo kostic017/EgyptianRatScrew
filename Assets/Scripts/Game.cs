@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -10,7 +11,7 @@ public class Game : MonoBehaviour
     private GameObject cardPrefab;
 
     [SerializeField]
-    private Transform deck;
+    private Transform discardPile;
 
     [SerializeField]
     private Transform player1Cards;
@@ -25,7 +26,7 @@ public class Game : MonoBehaviour
     private Button player2Button;
 
     [SerializeField]
-    private GameObject slapCombinationPanel;
+    private GameObject popup;
 
     [SerializeField]
     private CardAnimator cardAnimator;
@@ -55,43 +56,25 @@ public class Game : MonoBehaviour
         var cardValue = gameDataManager.DrawCardFromPlayer(currentPlayer);
         var cardStack = currentPlayer == Player.Player1 ? player1Cards : player2Cards;
 
-        var go = Instantiate(cardPrefab, cardStack.position, Quaternion.identity, deck);
+        var go = Instantiate(cardPrefab, cardStack.position, Quaternion.identity, discardPile);
         go.name = $"{cardValue.Rank.GetDescription()}_of_{cardValue.Suit.GetDescription()}";
 
         var card = go.GetComponent<Card>();
         card.FaceUp = true;
         card.Value = cardValue;
-        card.SetDisplayingOrder(deck.childCount);
+        card.SetDisplayingOrder(discardPile.childCount);
         gameDataManager.PutCardInDiscardPile(cardValue);
 
-        cardAnimator.AddAnimation(card, deck.position, Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
+        cardAnimator.AddAnimation(card, discardPile.position, Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
 
         TogglePlayer();
-        UpdateButtons();
-    }
-
-    private void TakeCards(Player player)
-    {
-        var cardStack = player == Player.Player1 ? player1Cards : player2Cards;
-
-        for (int i = deck.childCount - 1; i >= 0; --i)
-        {
-            var card = deck.GetChild(i).GetComponent<Card>();
-            card.transform.parent = cardStack;
-            gameDataManager.PopCardFromDiscardPile();
-            gameDataManager.GiveCardToPlayer(player, card.Value);
-            cardAnimator.AddAnimation(card, cardStack.position).AddListener(() => Destroy(card.gameObject));
-        }
-
-        currentPlayer = player;
         UpdateButtons();
     }
 
     private void Slap()
     {
         var slapCombination = gameDataManager.GetSlapCombination();
-        UpdateSlapCombinationText(slapCombination);
-
+        
         if (Input.mousePosition.y < Screen.height * 0.5f)
         {
             if (slapCombination != SlapCombination.None)
@@ -106,6 +89,38 @@ public class Game : MonoBehaviour
             else
                 TakeCards(Player.Player1);
         }
+
+        if (gameDataManager.GetPlayerCardCount(Player.Player1) == 0)
+        {
+            ShowPopup("Player2 Wins!");
+            Invoke(nameof(Restart), 2f);
+        }
+        else if (gameDataManager.GetPlayerCardCount(Player.Player2) == 0)
+        {
+            ShowPopup("Player1 Wins!");
+            Invoke(nameof(Restart), 2f);
+        }
+        else
+        {
+            ShowPopup(slapCombination.GetDescription());
+        }
+    }
+
+    private void TakeCards(Player player)
+    {
+        var cardStack = player == Player.Player1 ? player1Cards : player2Cards;
+
+        for (int i = discardPile.childCount - 1; i >= 0; --i)
+        {
+            var card = discardPile.GetChild(i).GetComponent<Card>();
+            card.transform.parent = cardStack;
+            gameDataManager.PopCardFromDiscardPile();
+            gameDataManager.GiveCardToPlayer(player, card.Value);
+            cardAnimator.AddAnimation(card, cardStack.position).AddListener(() => Destroy(card.gameObject));
+        }
+
+        currentPlayer = player;
+        UpdateButtons();
     }
 
     private void TogglePlayer()
@@ -132,16 +147,21 @@ public class Game : MonoBehaviour
         player2Button.GetComponentInChildren<TMP_Text>().text = $"Play card ({player2Count})";
     }
 
-    private void UpdateSlapCombinationText(SlapCombination slapCombination)
+    private void ShowPopup(string text)
     {
-        slapCombinationPanel.SetActive(true);
-        slapCombinationPanel.GetComponentInChildren<TMP_Text>().text = slapCombination.GetDescription();
-        Invoke(nameof(HideSlapCombinationText), 2f);
+        popup.SetActive(true);
+        popup.GetComponentInChildren<TMP_Text>().text = text;
+        Invoke(nameof(HidePopup), 2f);
     }
 
-    private void HideSlapCombinationText()
+    private void HidePopup()
     {
-        slapCombinationPanel.SetActive(false);
+        popup.SetActive(false);
+    }
+
+    private void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void OnAllAnimationsFinished()

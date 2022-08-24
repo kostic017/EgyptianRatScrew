@@ -25,6 +25,9 @@ public class Game : MonoBehaviour
     private Button player2Button;
 
     [SerializeField]
+    private GameObject slapCombinationPanel;
+
+    [SerializeField]
     private CardAnimator cardAnimator;
 
     private readonly GameDataManager gameDataManager = new();
@@ -42,20 +45,7 @@ public class Game : MonoBehaviour
         {
             if (!gameDataManager.IsDiscardPileEmpty())
             {
-                if (Input.mousePosition.y < Screen.height * 0.5f)
-                {
-                    if (gameDataManager.IsSlapValid())
-                        TakeCards(Player.Player1);
-                    else
-                        TakeCards(Player.Player2);
-                }
-                else
-                {
-                    if (gameDataManager.IsSlapValid())
-                        TakeCards(Player.Player2);
-                    else
-                        TakeCards(Player.Player1);
-                }
+                Slap();
             }
         }
     }
@@ -97,6 +87,27 @@ public class Game : MonoBehaviour
         UpdateButtons();
     }
 
+    private void Slap()
+    {
+        var slapCombination = gameDataManager.GetSlapCombination();
+        UpdateSlapCombinationText(slapCombination);
+
+        if (Input.mousePosition.y < Screen.height * 0.5f)
+        {
+            if (slapCombination != SlapCombination.None)
+                TakeCards(Player.Player1);
+            else
+                TakeCards(Player.Player2);
+        }
+        else
+        {
+            if (slapCombination != SlapCombination.None)
+                TakeCards(Player.Player2);
+            else
+                TakeCards(Player.Player1);
+        }
+    }
+
     private void TogglePlayer()
     {
         if (gameDataManager.GetPlayerCardCount(Player.Player1) == 0)
@@ -119,6 +130,18 @@ public class Game : MonoBehaviour
         
         player1Button.GetComponentInChildren<TMP_Text>().text = $"Play card ({player1Count})";
         player2Button.GetComponentInChildren<TMP_Text>().text = $"Play card ({player2Count})";
+    }
+
+    private void UpdateSlapCombinationText(SlapCombination slapCombination)
+    {
+        slapCombinationPanel.SetActive(true);
+        slapCombinationPanel.GetComponentInChildren<TMP_Text>().text = slapCombination.GetDescription();
+        Invoke(nameof(HideSlapCombinationText), 2f);
+    }
+
+    private void HideSlapCombinationText()
+    {
+        slapCombinationPanel.SetActive(false);
     }
 
     public void OnAllAnimationsFinished()

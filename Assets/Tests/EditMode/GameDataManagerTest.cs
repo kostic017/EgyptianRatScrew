@@ -3,125 +3,125 @@ using NUnit.Framework;
 public class GameDataManagerTest
 {
     [Test]
-    public void IsSlapValid_Double()
+    public void GetSlapCombination_Double()
     {
         var gameDataManager = new GameDataManager();
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.Ace));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Clubs, Rank.Ace));
-        Assert.True(gameDataManager.IsSlapValid());
+        Assert.AreEqual(SlapCombination.Double, gameDataManager.GetSlapCombination());
     }
 
     [Test]
-    public void IsSlapValid_Marriage_1()
+    public void GetSlapCombination_Marriage_1()
     {
         var gameDataManager = new GameDataManager();
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.Queen));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Clubs, Rank.King));
-        Assert.True(gameDataManager.IsSlapValid());
+        Assert.AreEqual(SlapCombination.Marriage, gameDataManager.GetSlapCombination());
     }
 
     [Test]
-    public void IsSlapValid_Marriage_2()
+    public void GetSlapCombination_Marriage_2()
     {
         var gameDataManager = new GameDataManager();
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.King));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Clubs, Rank.Queen));
-        Assert.True(gameDataManager.IsSlapValid());
+        Assert.AreEqual(SlapCombination.Marriage, gameDataManager.GetSlapCombination());
     }
 
     [Test]
-    public void IsSlapValid_Sandwich()
+    public void GetSlapCombination_Sandwich()
     {
         var gameDataManager = new GameDataManager();
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.Ace));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.Two));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Clubs, Rank.Ace));
-        Assert.True(gameDataManager.IsSlapValid());
+        Assert.AreEqual(SlapCombination.Sandwich, gameDataManager.GetSlapCombination());
     }
 
     [Test]
-    public void IsSlapValid_TopBottom()
+    public void GetSlapCombination_TopBottom()
     {
         var gameDataManager = new GameDataManager();
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.Ace));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.Two));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.Three));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Clubs, Rank.Ace));
-        Assert.True(gameDataManager.IsSlapValid());
+        Assert.AreEqual(SlapCombination.TopBottom, gameDataManager.GetSlapCombination());
     }
 
     [Test]
-    public void IsSlapValid_Divorce_1()
+    public void GetSlapCombination_Divorce_1()
     {
         var gameDataManager = new GameDataManager();
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.King));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.Ace));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Clubs, Rank.Queen));
-        Assert.True(gameDataManager.IsSlapValid());
+        Assert.AreEqual(SlapCombination.Divorce, gameDataManager.GetSlapCombination());
     }
 
     [Test]
-    public void IsSlapValid_Divorce_2()
+    public void GetSlapCombination_Divorce_2()
     {
         var gameDataManager = new GameDataManager();
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Clubs, Rank.Queen));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.Ace));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.King));
-        Assert.True(gameDataManager.IsSlapValid());
+        Assert.AreEqual(SlapCombination.Divorce, gameDataManager.GetSlapCombination());
     }
 
     [Test]
-    public void IsSlapValid_FourInRow_1()
+    public void GetSlapCombination_FourInRow_1()
     {
         var gameDataManager = new GameDataManager();
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.Ace));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Clubs, Rank.Two));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Diamonds, Rank.Three));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Hearts, Rank.Four));
-        Assert.True(gameDataManager.IsSlapValid());
+        Assert.AreEqual(SlapCombination.FourInRow, gameDataManager.GetSlapCombination());
     }
 
     [Test]
-    public void IsSlapValid_FourInRow_2()
+    public void GetSlapCombination_FourInRow_2()
     {
         var gameDataManager = new GameDataManager();
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.Four));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Clubs, Rank.Three));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Diamonds, Rank.Two));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Hearts, Rank.Ace));
-        Assert.True(gameDataManager.IsSlapValid());
+        Assert.AreEqual(SlapCombination.FourInRow, gameDataManager.GetSlapCombination());
     }
 
     [Test]
-    public void IsSlapValid_FourInRow_3()
+    public void GetSlapCombination_FourInRow_3()
     {
         var gameDataManager = new GameDataManager();
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.King));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Clubs, Rank.Ace));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Diamonds, Rank.Two));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Hearts, Rank.Three));
-        Assert.True(gameDataManager.IsSlapValid());
+        Assert.AreEqual(SlapCombination.FourInRow, gameDataManager.GetSlapCombination());
     }
 
     [Test]
-    public void IsSlapValid_FourInRow_4()
+    public void GetSlapCombination_FourInRow_4()
     {
         var gameDataManager = new GameDataManager();
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.Three));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Clubs, Rank.Two));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Diamonds, Rank.Ace));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Hearts, Rank.King));
-        Assert.True(gameDataManager.IsSlapValid());
+        Assert.AreEqual(SlapCombination.FourInRow, gameDataManager.GetSlapCombination());
     }
 
     [Test]
-    public void IsSlapValid_Invalid()
+    public void GetSlapCombination_None()
     {
         var gameDataManager = new GameDataManager();
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.Ace));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Clubs, Rank.Two));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Diamonds, Rank.Three));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Hearts, Rank.Five));
-        Assert.False(gameDataManager.IsSlapValid());
+        Assert.AreEqual(SlapCombination.None, gameDataManager.GetSlapCombination());
     }
 }

@@ -36,3 +36,14 @@ public enum Rank
     [Description("Q")] Queen,
     [Description("K")] King,
 }
+
+public enum SlapCombination
+{
+    [Description("Invalid slap")] None,
+    [Description("Double")] Double,
+    [Description("Marriage")] Marriage,
+    [Description("Sandwich")] Sandwich,
+    [Description("Top-Bottom")] TopBottom,
+    [Description("Divorce")] Divorce,
+    [Description("Four in a Row")] FourInRow
+}

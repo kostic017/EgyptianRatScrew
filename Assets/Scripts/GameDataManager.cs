@@ -71,7 +71,7 @@ public class GameDataManager
         return discardPile.Count == 0;
     }
 
-    public bool IsSlapValid()
+    public SlapCombination GetSlapCombination()
     {
         if (discardPile.Count >= 2)
         {
@@ -80,11 +80,11 @@ public class GameDataManager
 
             // Double
             if (r1 == r2)
-                return true;
+                return SlapCombination.Double;
 
             // Marriage
             if ((r1 == Rank.King && r2 == Rank.Queen) || (r1 == Rank.Queen && r2 == Rank.King))
-                return true;
+                return SlapCombination.Marriage;
         }
 
         if (discardPile.Count >= 3)
@@ -95,15 +95,15 @@ public class GameDataManager
 
             // Sandwich
             if (r1 == r3)
-                return true;
+                return SlapCombination.Sandwich;
 
             // Top-bottom
             if (r1 == rb)
-                return true;
+                return SlapCombination.TopBottom;
 
             // Divorce
             if ((r1 == Rank.King && r3 == Rank.Queen) || (r1 == Rank.Queen && r3 == Rank.King))
-                return true;
+                return SlapCombination.Divorce;
         }
 
         if (discardPile.Count >= 4)
@@ -115,11 +115,11 @@ public class GameDataManager
 
             // Four in a row
             if (r1 == r2.Increment(1) && r1 == r3.Increment(2) && r1 == r4.Increment(3))
-                return true;
+                return SlapCombination.FourInRow;
             if (r1 == r2.Increment(-1) && r1 == r3.Increment(-2) && r1 == r4.Increment(-3))
-                return true;
+                return SlapCombination.FourInRow;
         }
 
-        return false;
+        return SlapCombination.None;
     }
 }

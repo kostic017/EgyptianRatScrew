@@ -16,7 +16,6 @@ public static class Extensions
     {
         T[] arr = (T[])Enum.GetValues(src.GetType());
         int i = (Array.IndexOf(arr, src) + index) % arr.Length;
-        if (i < 0) return arr[arr.Length + i];
-        return arr[i];
+        return i >= 0 ? arr[i] : arr[arr.Length + i];
     }
 }

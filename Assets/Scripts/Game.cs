@@ -42,7 +42,7 @@ public class Game : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+        if (Input.GetMouseButtonDown(0) && !IsPointerOverGameObject())
         {
             if (!gameDataManager.IsDiscardPileEmpty())
             {
@@ -162,6 +162,18 @@ public class Game : MonoBehaviour
     private void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    private bool IsPointerOverGameObject()
+    {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return true;
+
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+            if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+                return true;
+
+        return false;
     }
 
     public void OnAllAnimationsFinished()

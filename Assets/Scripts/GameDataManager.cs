@@ -32,7 +32,7 @@ public class GameDataManager
         }
     }
 
-    public CardValue DrawCardFromPlayer(Player player)
+    public CardValue DrawPlayerCard(Player player)
     {
         if (player == Player.Player1)
             return player1Cards.Dequeue();
@@ -107,9 +107,9 @@ public class GameDataManager
                 return SlapCombination.Divorce;
 
             // Three in a row
-            if (r1 == r2.Increment(1) && r1 == r3.Increment(2))
+            if (r2 == r1.Next() && r3 == r2.Next())
                 return SlapCombination.ThreeInRow;
-            if (r1 == r2.Increment(-1) && r1 == r3.Increment(-2))
+            if (r2 == r1.Previous() && r3 == r2.Previous())
                 return SlapCombination.ThreeInRow;
 
         }

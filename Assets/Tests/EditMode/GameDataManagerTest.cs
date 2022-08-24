@@ -115,7 +115,8 @@ public class GameDataManagerTest
     {
         var gameDataManager = new GameDataManager();
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.Ace));
-        gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Clubs, Rank.Two));
+        gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.Two));
+        gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.Four));
         Assert.AreEqual(SlapCombination.None, gameDataManager.GetSlapCombination());
     }
 }

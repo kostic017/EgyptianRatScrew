@@ -50,16 +50,14 @@ public class CardAnimator : MonoBehaviour
         }
     }
 
-    public UnityEvent AddAnimation(Card card, Vector3 position)
+    public void AddAnimation(Card card, Vector3 position)
     {
-        return AddAnimation(card, position, Quaternion.identity);
+        AddAnimation(card, position, Quaternion.identity);
     }
 
-    public UnityEvent AddAnimation(Card card, Vector3 position, Quaternion rotation)
+    public void AddAnimation(Card card, Vector3 position, Quaternion rotation)
     {
         working = true;
-        var cardAnimation = new CardAnimation(card, position, rotation);
-        cardAnimations.Enqueue(cardAnimation);
-        return cardAnimation.OnFinished;
+        cardAnimations.Enqueue(new CardAnimation(card, position, rotation));
     }
 }

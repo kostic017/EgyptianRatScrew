@@ -53,10 +53,10 @@ public class Game : MonoBehaviour
 
     public void PlayCard()
     {
-        var cardValue = gameDataManager.DrawCardFromPlayer(currentPlayer);
-        var cardStack = currentPlayer == Player.Player1 ? player1Cards : player2Cards;
+        var cardValue = gameDataManager.DrawPlayerCard(currentPlayer);
+        var cardSpawnPoint = currentPlayer == Player.Player1 ? player1Cards : player2Cards;
 
-        var go = Instantiate(cardPrefab, cardStack.position, Quaternion.identity, discardPile);
+        var go = Instantiate(cardPrefab, cardSpawnPoint.position, Quaternion.identity, discardPile);
         go.name = $"{cardValue.Rank.GetDescription()}_of_{cardValue.Suit.GetDescription()}";
 
         var card = go.GetComponent<Card>();
@@ -116,7 +116,7 @@ public class Game : MonoBehaviour
             card.transform.parent = cardStack;
             gameDataManager.PopCardFromDiscardPile();
             gameDataManager.GiveCardToPlayer(player, card.Value);
-            cardAnimator.AddAnimation(card, cardStack.position).AddListener(() => Destroy(card.gameObject));
+            cardAnimator.AddAnimation(card, cardStack.position);
         }
 
         currentPlayer = player;
@@ -178,5 +178,9 @@ public class Game : MonoBehaviour
 
     public void OnAllAnimationsFinished()
     {
+        foreach (Transform card in player1Cards)
+            Destroy(card.gameObject);
+        foreach (Transform card in player2Cards)
+            Destroy(card.gameObject);
     }
 }

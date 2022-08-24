@@ -38,7 +38,7 @@ public enum Rank
 
 public enum SlapCombination
 {
-    [Description("Invalid slap")] None,
+    [Description("Ouch!")] None,
     [Description("Double")] Double,
     [Description("Marriage")] Marriage,
     [Description("Sandwich")] Sandwich,

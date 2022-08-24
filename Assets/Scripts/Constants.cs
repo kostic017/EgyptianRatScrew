@@ -2,7 +2,6 @@ using System.ComponentModel;
 
 public static class Constants
 {
-    public const float ZOffset = 0.01f;
     public const string CardBack = "back_blue3";
 }
 
@@ -45,5 +44,5 @@ public enum SlapCombination
     [Description("Sandwich")] Sandwich,
     [Description("Top-Bottom")] TopBottom,
     [Description("Divorce")] Divorce,
-    [Description("Four in a Row")] FourInRow
+    [Description("Three in a Row")] ThreeInRow
 }

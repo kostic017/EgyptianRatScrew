@@ -90,6 +90,7 @@ public class GameDataManager
         if (discardPile.Count >= 3)
         {
             Rank r1 = discardPile[^1].Rank;
+            Rank r2 = discardPile[^2].Rank;
             Rank r3 = discardPile[^3].Rank;
             Rank rb = discardPile[0].Rank;
 
@@ -104,20 +105,13 @@ public class GameDataManager
             // Divorce
             if ((r1 == Rank.King && r3 == Rank.Queen) || (r1 == Rank.Queen && r3 == Rank.King))
                 return SlapCombination.Divorce;
-        }
 
-        if (discardPile.Count >= 4)
-        {
-            Rank r1 = discardPile[^1].Rank;
-            Rank r2 = discardPile[^2].Rank;
-            Rank r3 = discardPile[^3].Rank;
-            Rank r4 = discardPile[^4].Rank;
+            // Three in a row
+            if (r1 == r2.Increment(1) && r1 == r3.Increment(2))
+                return SlapCombination.ThreeInRow;
+            if (r1 == r2.Increment(-1) && r1 == r3.Increment(-2))
+                return SlapCombination.ThreeInRow;
 
-            // Four in a row
-            if (r1 == r2.Increment(1) && r1 == r3.Increment(2) && r1 == r4.Increment(3))
-                return SlapCombination.FourInRow;
-            if (r1 == r2.Increment(-1) && r1 == r3.Increment(-2) && r1 == r4.Increment(-3))
-                return SlapCombination.FourInRow;
         }
 
         return SlapCombination.None;

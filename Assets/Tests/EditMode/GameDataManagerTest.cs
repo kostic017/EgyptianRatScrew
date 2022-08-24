@@ -71,47 +71,43 @@ public class GameDataManagerTest
     }
 
     [Test]
-    public void GetSlapCombination_FourInRow_1()
+    public void GetSlapCombination_ThreeInRow_1()
     {
         var gameDataManager = new GameDataManager();
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.Ace));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Clubs, Rank.Two));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Diamonds, Rank.Three));
-        gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Hearts, Rank.Four));
-        Assert.AreEqual(SlapCombination.FourInRow, gameDataManager.GetSlapCombination());
+        Assert.AreEqual(SlapCombination.ThreeInRow, gameDataManager.GetSlapCombination());
     }
 
     [Test]
-    public void GetSlapCombination_FourInRow_2()
+    public void GetSlapCombination_ThreeInRow_2()
     {
         var gameDataManager = new GameDataManager();
-        gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.Four));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Clubs, Rank.Three));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Diamonds, Rank.Two));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Hearts, Rank.Ace));
-        Assert.AreEqual(SlapCombination.FourInRow, gameDataManager.GetSlapCombination());
+        Assert.AreEqual(SlapCombination.ThreeInRow, gameDataManager.GetSlapCombination());
     }
 
     [Test]
-    public void GetSlapCombination_FourInRow_3()
+    public void GetSlapCombination_ThreeInRow_3()
     {
         var gameDataManager = new GameDataManager();
-        gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.King));
-        gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Clubs, Rank.Ace));
-        gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Diamonds, Rank.Two));
-        gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Hearts, Rank.Three));
-        Assert.AreEqual(SlapCombination.FourInRow, gameDataManager.GetSlapCombination());
+        gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Clubs, Rank.King));
+        gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Diamonds, Rank.Ace));
+        gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Hearts, Rank.Two));
+        Assert.AreEqual(SlapCombination.ThreeInRow, gameDataManager.GetSlapCombination());
     }
 
     [Test]
-    public void GetSlapCombination_FourInRow_4()
+    public void GetSlapCombination_ThreeInRow_4()
     {
         var gameDataManager = new GameDataManager();
-        gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.Three));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Clubs, Rank.Two));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Diamonds, Rank.Ace));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Hearts, Rank.King));
-        Assert.AreEqual(SlapCombination.FourInRow, gameDataManager.GetSlapCombination());
+        Assert.AreEqual(SlapCombination.ThreeInRow, gameDataManager.GetSlapCombination());
     }
 
     [Test]
@@ -120,8 +116,6 @@ public class GameDataManagerTest
         var gameDataManager = new GameDataManager();
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.Ace));
         gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Clubs, Rank.Two));
-        gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Diamonds, Rank.Three));
-        gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Hearts, Rank.Five));
         Assert.AreEqual(SlapCombination.None, gameDataManager.GetSlapCombination());
     }
 }

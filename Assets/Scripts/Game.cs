@@ -150,7 +150,8 @@ public class Game : MonoBehaviour
     private void ShowPopup(string text)
     {
         popup.SetActive(true);
-        popup.GetComponentInChildren<TMP_Text>().text = text;
+        foreach (var t in popup.GetComponentsInChildren<TMP_Text>())
+            t.text = text;
         Invoke(nameof(HidePopup), 2f);
     }
 

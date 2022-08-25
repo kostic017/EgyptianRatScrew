@@ -60,7 +60,6 @@ public class Game : MonoBehaviour
         go.name = $"{cardValue.Rank.GetDescription()}_of_{cardValue.Suit.GetDescription()}";
 
         var card = go.GetComponent<Card>();
-        card.FaceUp = true;
         card.Value = cardValue;
         card.SetDisplayingOrder(discardPile.childCount);
         gameDataManager.PutCardInDiscardPile(cardValue);

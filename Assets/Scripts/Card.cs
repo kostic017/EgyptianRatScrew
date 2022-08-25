@@ -6,8 +6,6 @@ public class Card : MonoBehaviour
     [SerializeField]
     private SpriteAtlas atlas;
 
-    private bool faceUp;
-
     private SpriteRenderer spriteRenderer;
 
     public CardValue Value { get; set; }
@@ -17,23 +15,13 @@ public class Card : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    private void Start()
+    {
+        spriteRenderer.sprite = atlas.GetSprite(gameObject.name);
+    }
+
     public void SetDisplayingOrder(int order)
     {
         spriteRenderer.sortingOrder = order;
-    }
-
-    public bool FaceUp
-    {
-        get
-        {
-            return faceUp;
-        }
-        set
-        {
-            faceUp = value;
-            spriteRenderer.sprite = faceUp
-                ? atlas.GetSprite(gameObject.name)
-                : atlas.GetSprite(Constants.CardBack);
-        }
     }
 }

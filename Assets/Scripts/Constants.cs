@@ -1,10 +1,5 @@
 using System.ComponentModel;
 
-public static class Constants
-{
-    public const string CardBack = "back_blue3";
-}
-
 public enum Player
 {
     Player1,

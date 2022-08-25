@@ -42,7 +42,6 @@ public enum SlapCombination
     [Description("Double")] Double,
     [Description("Marriage")] Marriage,
     [Description("Sandwich")] Sandwich,
-    [Description("Top-Bottom")] TopBottom,
     [Description("Divorce")] Divorce,
     [Description("Three in a Row")] ThreeInRow
 }

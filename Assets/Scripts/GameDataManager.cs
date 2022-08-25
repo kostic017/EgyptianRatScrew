@@ -92,15 +92,10 @@ public class GameDataManager
             Rank r1 = discardPile[^1].Rank;
             Rank r2 = discardPile[^2].Rank;
             Rank r3 = discardPile[^3].Rank;
-            Rank rb = discardPile[0].Rank;
 
             // Sandwich
             if (r1 == r3)
                 return SlapCombination.Sandwich;
-
-            // Top-bottom
-            if (r1 == rb)
-                return SlapCombination.TopBottom;
 
             // Divorce
             if ((r1 == Rank.King && r3 == Rank.Queen) || (r1 == Rank.Queen && r3 == Rank.King))

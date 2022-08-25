@@ -40,17 +40,6 @@ public class GameDataManagerTest
     }
 
     [Test]
-    public void GetSlapCombination_TopBottom()
-    {
-        var gameDataManager = new GameDataManager();
-        gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.Ace));
-        gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.Two));
-        gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Spades, Rank.Three));
-        gameDataManager.PutCardInDiscardPile(new CardValue(Suit.Clubs, Rank.Ace));
-        Assert.AreEqual(SlapCombination.TopBottom, gameDataManager.GetSlapCombination());
-    }
-
-    [Test]
     public void GetSlapCombination_Divorce_1()
     {
         var gameDataManager = new GameDataManager();

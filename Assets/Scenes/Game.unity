@@ -350,11 +350,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 30
   rotationSpeed: 20
-  OnAllAnimationsFinished:
+  onAllAnimationsFinished:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 334503368}
-        m_TargetAssemblyTypeName: Game, Assembly-CSharp
+        m_TargetAssemblyTypeName: Game, Scripts
         m_MethodName: OnAllAnimationsFinished
         m_Mode: 1
         m_Arguments:

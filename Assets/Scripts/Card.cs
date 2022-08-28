@@ -8,20 +8,29 @@ public class Card : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
 
-    public CardValue Value { get; set; }
+    private CardValue cardValue;
 
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    private void Start()
-    {
-        spriteRenderer.sprite = atlas.GetSprite(gameObject.name);
-    }
-
     public void SetDisplayingOrder(int order)
     {
         spriteRenderer.sortingOrder = order;
+    }
+
+    public CardValue Value
+    {
+        get
+        {
+            return cardValue;
+        }
+        set
+        {
+            cardValue = value;
+            gameObject.name = $"{value.Rank.GetDescription()}_of_{value.Suit.GetDescription()}";
+            spriteRenderer.sprite = atlas.GetSprite(gameObject.name);
+        }
     }
 }

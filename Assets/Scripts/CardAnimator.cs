@@ -11,41 +11,33 @@ public class CardAnimator : MonoBehaviour
     private float rotationSpeed = 10f;
 
     [SerializeField]
-    private UnityEvent OnAllAnimationsFinished = new();
+    private UnityEvent onAllAnimationsFinished = new();
 
-    private bool working;
+    private bool shouldInvoke;
     private CardAnimation currentCardAnimation;
     private readonly Queue<CardAnimation> cardAnimations = new();
 
     private void Update()
     {
         if (currentCardAnimation == null)
-        {
             NextAnimation();
-        }
-        else
-        {
-            if (currentCardAnimation.Play(movementSpeed, rotationSpeed))
-            {
-                NextAnimation();
-            }
-        }
+        else if (currentCardAnimation.Play(movementSpeed, rotationSpeed))
+            NextAnimation();
     }
 
     private void NextAnimation()
     {
         currentCardAnimation = null;
-
         if (cardAnimations.Count > 0)
         {
             currentCardAnimation = cardAnimations.Dequeue();
         }
         else
         {
-            if (working)
+            if (shouldInvoke)
             {
-                working = false;
-                OnAllAnimationsFinished.Invoke();
+                shouldInvoke = false;
+                onAllAnimationsFinished.Invoke();
             }
         }
     }
@@ -57,7 +49,7 @@ public class CardAnimator : MonoBehaviour
 
     public void AddAnimation(Card card, Vector3 position, Quaternion rotation)
     {
-        working = true;
+        shouldInvoke = true;
         cardAnimations.Enqueue(new CardAnimation(card, position, rotation));
     }
 }

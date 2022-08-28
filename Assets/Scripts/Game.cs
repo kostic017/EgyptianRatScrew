@@ -35,7 +35,7 @@ public class Game : MonoBehaviour
 
     private Player currentPlayer = Player.Player1;
 
-    private void Start()
+    private void Awake()
     {
         gameDataManager.DealCards();
     }
@@ -57,7 +57,6 @@ public class Game : MonoBehaviour
         var cardSpawnPoint = currentPlayer == Player.Player1 ? player1Cards : player2Cards;
 
         var go = Instantiate(cardPrefab, cardSpawnPoint.position, Quaternion.identity, discardPile);
-        go.name = $"{cardValue.Rank.GetDescription()}_of_{cardValue.Suit.GetDescription()}";
 
         var card = go.GetComponent<Card>();
         card.Value = cardValue;

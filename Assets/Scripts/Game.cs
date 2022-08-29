@@ -76,16 +76,16 @@ public class Game : MonoBehaviour
         if (Input.mousePosition.y < Screen.height * 0.5f)
         {
             if (slapCombination != SlapCombination.None)
-                TakeCards(Player.Player1);
+                TakeCardsFromDiscardPile(Player.Player1);
             else
-                TakeCards(Player.Player2);
+                TakeCardsFromDiscardPile(Player.Player2);
         }
         else
         {
             if (slapCombination != SlapCombination.None)
-                TakeCards(Player.Player2);
+                TakeCardsFromDiscardPile(Player.Player2);
             else
-                TakeCards(Player.Player1);
+                TakeCardsFromDiscardPile(Player.Player1);
         }
 
         if (gameDataManager.GetPlayerCardCount(Player.Player1) == 0)
@@ -104,7 +104,7 @@ public class Game : MonoBehaviour
         }
     }
 
-    private void TakeCards(Player player)
+    private void TakeCardsFromDiscardPile(Player player)
     {
         var cardStack = player == Player.Player1 ? player1Cards : player2Cards;
 
@@ -112,8 +112,8 @@ public class Game : MonoBehaviour
         {
             var card = discardPile.GetChild(i).GetComponent<Card>();
             card.transform.parent = cardStack;
-            gameDataManager.PopCardFromDiscardPile();
-            gameDataManager.GiveCardToPlayer(player, card.Value);
+            var cardValue = gameDataManager.PopCardFromDiscardPile();
+            gameDataManager.GiveCardToPlayer(player, cardValue);
             cardAnimator.AddAnimation(card, cardStack.position);
         }
 

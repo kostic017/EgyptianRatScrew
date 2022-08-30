@@ -1,11 +1,5 @@
 using System.ComponentModel;
 
-public enum Player
-{
-    Player1,
-    Player2,
-};
-
 public enum Suit
 {
     [Description("spades")] Spades,

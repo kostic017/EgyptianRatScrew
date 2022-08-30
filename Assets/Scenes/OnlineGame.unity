@@ -407,12 +407,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d902105d2c552b49969563d3d616ee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardPrefab: {fileID: 7392928187405412965, guid: c58933be80414704b816487d5c42d9f1, type: 3}
-  discardPile: {fileID: 1905994455}
-  player1Cards: {fileID: 659822858}
-  player2Cards: {fileID: 1256501786}
-  player1Button: {fileID: 1128859845}
-  player2Button: {fileID: 0}
+  cardPrefab: {fileID: -6811375939981808718, guid: c58933be80414704b816487d5c42d9f1, type: 3}
+  discardPilePoint: {fileID: 1905994455}
+  localCardSpawnPoint: {fileID: 659822858}
+  remoteCardSpawnPoint: {fileID: 1256501786}
+  player1PlayCardButton: {fileID: 1128859845}
+  player2PlayCardButton: {fileID: 0}
   popup: {fileID: 75472639}
   cardAnimator: {fileID: 170006969}
 --- !u!1 &519420028

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Lobby : MonoBehaviour
+public class MainMenu : MonoBehaviour
 {
     public void OnLocalClicked()
     {
@@ -10,6 +10,6 @@ public class Lobby : MonoBehaviour
 
     public void OnOnlineClicked()
     {
-        SceneManager.LoadScene("OnlineGame");
+        SceneManager.LoadScene("Lobby");
     }
 }

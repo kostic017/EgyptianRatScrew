@@ -3,14 +3,7 @@
 public class Player
 {
     private readonly Queue<CardValue> cards = new();
-    
-    public string Name { get; }
     public int CardCount => cards.Count;
-
-    public Player(string name)
-    {
-        Name = name;
-    }
 
     public void AddCard(CardValue card)
     {

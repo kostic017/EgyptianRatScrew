@@ -34,8 +34,8 @@ public class Game : MonoBehaviour
     private CardAnimator cardAnimator;
 
     private Player currentPlayer;
-    private readonly Player localPlayer = new("Player 1");
-    private readonly Player remotePlayer = new("Player 2");
+    private readonly Player localPlayer;
+    private readonly Player remotePlayer;
 
     private readonly DiscardPile discardPile = new();
 
@@ -113,12 +113,12 @@ public class Game : MonoBehaviour
 
         if (localPlayer.CardCount == 0)
         {
-            ShowPopup($"{remotePlayer.Name} Wins!");
+            ShowPopup("Player 2 Won!");
             Invoke(nameof(Restart), 2f);
         }
         else if (remotePlayer.CardCount == 0)
         {
-            ShowPopup($"{localPlayer.Name} Wins!");
+            ShowPopup("Player 1 Won!");
             Invoke(nameof(Restart), 2f);
         }
         else
@@ -157,15 +157,13 @@ public class Game : MonoBehaviour
 
     private void UpdateButtons()
     {
-        int player1Count = localPlayer.CardCount;
-        player1PlayCardButton.interactable = player1Count != 0 && currentPlayer == localPlayer;
-        player1PlayCardButton.GetComponentInChildren<TMP_Text>().text = $"Play card ({player1Count})";
+        player1PlayCardButton.interactable = localPlayer.CardCount != 0 && currentPlayer == localPlayer;
+        player1PlayCardButton.GetComponentInChildren<TMP_Text>().text = $"Play card ({localPlayer.CardCount})";
         
         if (player2PlayCardButton != null)
         {
-            int player2Count = remotePlayer.CardCount;
-            player2PlayCardButton.GetComponentInChildren<TMP_Text>().text = $"Play card ({player2Count})";
-            player2PlayCardButton.interactable = player2Count != 0 && currentPlayer == remotePlayer;
+            player2PlayCardButton.GetComponentInChildren<TMP_Text>().text = $"Play card ({remotePlayer.CardCount})";
+            player2PlayCardButton.interactable = remotePlayer.CardCount != 0 && currentPlayer == remotePlayer;
         }
     }
 

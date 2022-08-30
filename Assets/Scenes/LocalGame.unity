@@ -349,7 +349,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 30
-  rotationSpeed: 20
+  rotationSpeed: 200
   onAllAnimationsFinished:
     m_PersistentCalls:
       m_Calls:

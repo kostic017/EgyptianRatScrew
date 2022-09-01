@@ -337,7 +337,7 @@ GameObject:
   - component: {fileID: 486175620}
   - component: {fileID: 486175619}
   m_Layer: 0
-  m_Name: Lobby
+  m_Name: Main Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -355,9 +355,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a4783be87bf75c499bad71fb4c5ef35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nicknamePopup: {fileID: 0}
-  waitForOpponentPopup: {fileID: 0}
-  nicknameInputField: {fileID: 0}
 --- !u!4 &486175620
 Transform:
   m_ObjectHideFlags: 0

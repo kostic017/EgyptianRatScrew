@@ -34,9 +34,8 @@ public class Game : MonoBehaviour
     private CardAnimator cardAnimator;
 
     private Player currentPlayer;
-    private readonly Player localPlayer;
-    private readonly Player remotePlayer;
-
+    private readonly Player localPlayer = new();
+    private readonly Player remotePlayer = new();
     private readonly DiscardPile discardPile = new();
 
     private void Awake()

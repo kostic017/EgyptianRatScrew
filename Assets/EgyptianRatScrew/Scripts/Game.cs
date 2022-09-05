@@ -33,6 +33,8 @@ public class Game : MonoBehaviour
     [SerializeField]
     private CardAnimator cardAnimator;
 
+    private int chances;
+
     private Player currentPlayer;
     private readonly Player localPlayer = new();
     private readonly Player remotePlayer = new();
@@ -77,22 +79,53 @@ public class Game : MonoBehaviour
 
     public void PlayCard()
     {
-        var cardValue = currentPlayer.GetCard();
+        var cv = currentPlayer.GetCard();
         var cardSpawnPoint = currentPlayer == localPlayer ? localCardSpawnPoint : remoteCardSpawnPoint;
 
         var card = Instantiate(cardPrefab, cardSpawnPoint.position, Quaternion.identity, discardPilePoint);
-        card.gameObject.name = $"{cardValue.Rank.GetDescription()}_of_{cardValue.Suit.GetDescription()}";
+        card.gameObject.name = $"{cv.Rank.GetDescription()}_of_{cv.Suit.GetDescription()}";
         card.SetDisplayingOrder(discardPile.CardCount);
 
-        discardPile.AddCard(cardValue);
+        discardPile.AddCard(cv);
         cardAnimator.AddAnimation(card, discardPilePoint.position, Quaternion.Euler(0f, 0f, Random.Range(0f, 360f)));
-        
-        TogglePlayer();
+
+        if (chances > 0)
+        {
+            if (cv.Rank != Rank.Jack && cv.Rank != Rank.Queen && cv.Rank != Rank.King && cv.Rank != Rank.Ace)
+            {
+                if (--chances == 0)
+                    TakeCardsFromDiscardPile(currentPlayer == localPlayer ? remotePlayer : localPlayer);
+            }
+            else
+            {
+                TogglePlayer();
+                SetChances(cv.Rank);
+            }
+        }
+        else
+        {
+            TogglePlayer();
+            SetChances(cv.Rank);
+        }
+
         UpdateButtons();
+    }
+
+    private void SetChances(Rank rank)
+    {
+        chances = rank switch
+        {
+            Rank.Jack => 1,
+            Rank.Queen => 2,
+            Rank.King => 3,
+            Rank.Ace => 4,
+            _ => 0,
+        };
     }
 
     private void Slap()
     {
+        chances = 0;
         var slapCombination = discardPile.GetSlapCombination();
         
         if (Input.mousePosition.y < Screen.height * 0.5f)
@@ -161,8 +194,8 @@ public class Game : MonoBehaviour
         
         if (player2PlayCardButton != null)
         {
-            player2PlayCardButton.GetComponentInChildren<TMP_Text>().text = $"Play card ({remotePlayer.CardCount})";
             player2PlayCardButton.interactable = remotePlayer.CardCount != 0 && currentPlayer == remotePlayer;
+            player2PlayCardButton.GetComponentInChildren<TMP_Text>().text = $"Play card ({remotePlayer.CardCount})";
         }
     }
 

@@ -33,7 +33,8 @@ public class Game : MonoBehaviour
     [SerializeField]
     private CardAnimator cardAnimator;
 
-    private int chances;
+    private bool isLuckFactorEnabled;
+    private int currentPlayerChances;
 
     private Player currentPlayer;
     private readonly Player localPlayer = new();
@@ -44,6 +45,7 @@ public class Game : MonoBehaviour
     {
         DealCards();
         currentPlayer = localPlayer;
+        isLuckFactorEnabled = PlayerPrefs.GetInt("LuckFactor", 0) == 1;
     }
 
     private void Update()
@@ -79,41 +81,55 @@ public class Game : MonoBehaviour
 
     public void PlayCard()
     {
-        var cv = currentPlayer.GetCard();
+        var cardValue = currentPlayer.GetCard();
         var cardSpawnPoint = currentPlayer == localPlayer ? localCardSpawnPoint : remoteCardSpawnPoint;
 
         var card = Instantiate(cardPrefab, cardSpawnPoint.position, Quaternion.identity, discardPilePoint);
-        card.gameObject.name = $"{cv.Rank.GetDescription()}_of_{cv.Suit.GetDescription()}";
+        card.gameObject.name = $"{cardValue.Rank.GetDescription()}_of_{cardValue.Suit.GetDescription()}";
         card.SetDisplayingOrder(discardPile.CardCount);
 
-        discardPile.AddCard(cv);
+        discardPile.AddCard(cardValue);
         cardAnimator.AddAnimation(card, discardPilePoint.position, Quaternion.Euler(0f, 0f, Random.Range(0f, 360f)));
 
-        if (chances > 0)
+        if (isLuckFactorEnabled)
         {
-            if (cv.Rank != Rank.Jack && cv.Rank != Rank.Queen && cv.Rank != Rank.King && cv.Rank != Rank.Ace)
+            if (currentPlayerChances == 0)
             {
-                if (--chances == 0)
-                    TakeCardsFromDiscardPile(currentPlayer == localPlayer ? remotePlayer : localPlayer);
+                TogglePlayer();
+                if (IsLetterCard(cardValue.Rank))
+                    SetCurrentPlayerChances(cardValue.Rank);
             }
             else
             {
-                TogglePlayer();
-                SetChances(cv.Rank);
+                if (IsLetterCard(cardValue.Rank))
+                {
+                    TogglePlayer();
+                    SetCurrentPlayerChances(cardValue.Rank);
+                }
+                else
+                {
+                    --currentPlayerChances;
+                    if (currentPlayerChances == 0)
+                        TakeCardsFromDiscardPile(currentPlayer == localPlayer ? remotePlayer : localPlayer);
+                }
             }
         }
         else
         {
             TogglePlayer();
-            SetChances(cv.Rank);
         }
 
         UpdateButtons();
     }
 
-    private void SetChances(Rank rank)
+    private bool IsLetterCard(Rank rank)
     {
-        chances = rank switch
+        return rank == Rank.Jack || rank == Rank.Queen || rank == Rank.King || rank == Rank.Ace;
+    }
+
+    private void SetCurrentPlayerChances(Rank rank)
+    {
+        currentPlayerChances = rank switch
         {
             Rank.Jack => 1,
             Rank.Queen => 2,
@@ -125,7 +141,7 @@ public class Game : MonoBehaviour
 
     private void Slap()
     {
-        chances = 0;
+        currentPlayerChances = 0;
         var slapCombination = discardPile.GetSlapCombination();
         
         if (Input.mousePosition.y < Screen.height * 0.5f)

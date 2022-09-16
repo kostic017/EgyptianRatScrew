@@ -42,6 +42,13 @@ public class CardAnimator : MonoBehaviour
         }
     }
 
+    
+
+        public void AddAnimation(Card card, Vector3 position, UnityAction OnAnimationFinishedDelegate)
+    {
+        AddAnimation(card, position, Quaternion.identity, OnAnimationFinishedDelegate);
+    }
+
     public void AddAnimation(Card card, Vector3 position)
     {
         AddAnimation(card, position, Quaternion.identity);
@@ -49,7 +56,12 @@ public class CardAnimator : MonoBehaviour
 
     public void AddAnimation(Card card, Vector3 position, Quaternion rotation)
     {
+        AddAnimation(card, position, rotation, null);
+    }
+
+    public void AddAnimation(Card card, Vector3 position, Quaternion rotation, UnityAction OnAnimationFinishedDelegate)
+    {
         shouldInvoke = true;
-        cardAnimations.Enqueue(new CardAnimation(card, position, rotation));
+        cardAnimations.Enqueue(new CardAnimation(card, position, rotation, OnAnimationFinishedDelegate));
     }
 }

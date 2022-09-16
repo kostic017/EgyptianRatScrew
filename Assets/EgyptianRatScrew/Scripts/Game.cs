@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -39,41 +40,18 @@ public class Game : MonoBehaviour
     private readonly DiscardPile discardPile = new();
 
     private void Awake()
-    {
-        DealCards();
+    {        
+        DeckManager.DealCards(localPlayer,remotePlayer);
         currentPlayer = localPlayer;
     }
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !IsPointerOverUI())
+        if (Input.GetMouseButtonDown(0) && !DeckManager.IsPointerOverUI())
             if (discardPile.CardCount > 0)
                 Slap();
     }
 
-    private void DealCards()
-    {
-        List<CardValue> cards = new();
-        foreach (Suit suit in Enum.GetValues(typeof(Suit)))
-            foreach (Rank rank in Enum.GetValues(typeof(Rank)))
-                cards.Add(new CardValue(suit, rank));
-
-        for (int n = cards.Count - 1; n > 0; --n)
-        {
-            int k = Random.Range(0, n + 1);
-            (cards[k], cards[n]) = (cards[n], cards[k]);
-        }
-
-        bool flag = true;
-        foreach (var card in cards)
-        {
-            if (flag)
-                localPlayer.AddCard(card);
-            else
-                remotePlayer.AddCard(card);
-            flag = !flag;
-        }
-    }
 
     public void PlayCard()
     {
@@ -81,6 +59,7 @@ public class Game : MonoBehaviour
         var cardSpawnPoint = currentPlayer == localPlayer ? localCardSpawnPoint : remoteCardSpawnPoint;
 
         var card = Instantiate(cardPrefab, cardSpawnPoint.position, Quaternion.identity, discardPilePoint);
+        card.GetComponent<NetworkObject>()?.Spawn();
         card.gameObject.name = $"{cardValue.Rank.GetDescription()}_of_{cardValue.Suit.GetDescription()}";
         card.SetDisplayingOrder(discardPile.CardCount);
 
@@ -184,17 +163,6 @@ public class Game : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    private bool IsPointerOverUI()
-    {
-        if (EventSystem.current.IsPointerOverGameObject())
-            return true;
-
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-            if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
-                return true;
-
-        return false;
-    }
 
     public void OnAllAnimationsFinished()
     {

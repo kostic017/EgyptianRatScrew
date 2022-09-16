@@ -10,6 +10,6 @@ public class MainMenu : MonoBehaviour
 
     public void OnOnlineClicked()
     {
-        SceneManager.LoadScene("OnlineGame");
+        SceneManager.LoadScene("Lobby");
     }
 }

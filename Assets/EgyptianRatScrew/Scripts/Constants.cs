@@ -32,5 +32,6 @@ public enum SlapCombination
     [Description("Marriage")] Marriage,
     [Description("Sandwich")] Sandwich,
     [Description("Divorce")] Divorce,
-    [Description("Three in a Row")] ThreeInRow
+    [Description("Three in a Row")] ThreeInRow,
+    [Description("Cheat win!")] CheatWin,
 }

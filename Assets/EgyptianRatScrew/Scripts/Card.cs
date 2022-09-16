@@ -15,6 +15,11 @@ public class Card : MonoBehaviour
 
     private void Start()
     {
+        SetupSprite();
+    }
+
+    public void SetupSprite()
+    {
         spriteRenderer.sprite = atlas.GetSprite(gameObject.name);
     }
 
@@ -22,4 +27,6 @@ public class Card : MonoBehaviour
     {
         spriteRenderer.sortingOrder = order;
     }
+
+
 }
